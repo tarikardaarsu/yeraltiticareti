@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sekomoligania Şirket Ağı v23 - Kusursuz Ekonomi ve Arkaplan</title>
+    <style>
+        :root {
+            --neon-green: #00ff41;
+            --dark-bg: #050505;
+            --alert-red: #ff2a2a;
+            --corporate-blue: #0088ff;
+            --gold: #ffd700;
+            --purple: #b026ff;
+            --orange: #ff8800;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            background-image: url('Gemini_Generated_Image_2w6jt2w6jt2w6jt2.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--neon-green);
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding-bottom: 80px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            transition: background-image 0.5s ease;
+        }
+
+        #gov-banner {
+            width: 100%;
+            background: rgba(255, 0, 0, 0.85);
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-bottom: 2px solid var(--gold);
+            text-shadow: 1px 1px 2px black;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #start-screen {
+            border: 2px solid var(--gold);
+            padding: 40px;
+            background: rgba(10, 8, 0, 0.95);
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            width: 500px;
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            margin: 80px auto;
+        }
+
+        #start-screen h2 {
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        #start-screen select,
+        #start-screen input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: black;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            font-family: inherit;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        #start-screen select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #555;
+            color: #888;
+        }
+
+        #terminal {
+            display: none;
+            width: 95%;
+            max-width: 1400px;
+            margin: 20px auto;
+            border: 2px solid var(--gold);
+            padding: 20px;
+            background: rgba(10, 8, 0, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            flex-direction: column;
+            border-radius: 10px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-center {
+            font-size: 1.2rem;
+            color: var(--gold);
+            border: 1px dashed var(--gold);
+            padding: 8px 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            border: 1px solid var(--gold);
+            padding: 12px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #aaa;
+        }
+
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #222;
+            margin-top: 8px;
+            border: 1px solid var(--gold);
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 0.5s;
+        }
+
+        #log-area {
+            width: 100%;
+            height: 180px;
+            overflow-y: auto;
+            border: 1px dashed var(--gold);
+            padding: 15px;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #ddd;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel-col {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid #444;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+        }
+
+        .panel-col h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+            color: white;
+            border-bottom: 1px solid #444;
+            padding-bottom: 8px;
+        }
+
+        button {
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+            transition: 0.2s;
+            font-size: 0.95rem;
+            border-radius: 3px;
+        }
+
+        button:hover:not(:disabled) {
+            background: var(--gold);
+            color: black;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #555;
+            color: #555;
+        }
+
+        button.danger {
+            color: var(--alert-red);
+            border-color: var(--alert-red);
+        }
+
+        button.danger:hover:not(:disabled) {
+            background: var(--alert-red);
+            color: white;
+        }
+
+        button.sabotage {
+            color: var(--orange);
+            border-color: var(--orange);
+        }
+
+        button.sabotage:hover:not(:disabled) {
+            background: var(--orange);
+            color: black;
+        }
+
+        select,
+        input[type=text],
+        textarea,
+        input[type=number] {
+            width: 100%;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            font-family: inherit;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+        }
+
+        .rival-box {
+            border: 1px dashed var(--orange);
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 5px;
+        }
+
+        .rival-name {
+            color: var(--orange);
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 1.1rem;
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .flex-row button {
+            flex: 1;
+        }
+
+        .board-member {
+            border: 1px solid #444;
+            padding: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ddd;
+        }
+
+        .locked {
+            opacity: 0.3;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+
+        #presidency-panel {
+            display: none;
+            width: 95%;
+            max-width: 1400px;
+            margin: 30px auto;
+            border: 3px solid var(--alert-red);
+            padding: 30px;
+            background: rgba(50, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.6);
+            border-radius: 10px;
+        }
+
+        #presidency-panel h2 {
+            color: white;
+            text-align: center;
+            border-bottom: 2px solid var(--alert-red);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .gov-btn {
+            background: #111;
+            color: white;
+            border: 1px solid var(--alert-red);
+            padding: 15px;
+            font-size: 1.1rem;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .gov-btn:hover {
+            background: var(--alert-red);
+            color: white;
+        }
+
+        #game-over-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(15, 0, 0, 0.95);
+            border: 3px solid var(--alert-red);
+            padding: 40px;
+            width: 500px;
+            box-shadow: 0 0 50px var(--alert-red);
+            z-index: 10000;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+        }
+
+        #game-over-modal h1 {
+            color: var(--alert-red);
+            margin-top: 0;
+            font-size: 2.8rem;
+        }
+
+        /* ADMİN VE ARKA PLAN KONTROLLERİ */
+        #secret-admin-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            font-size: 2.5rem;
+            cursor: pointer;
+            opacity: 0.2;
+            z-index: 9999;
+        }
+
+        #secret-admin-btn:hover {
+            opacity: 1;
+        }
+
+        #bg-changer {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+            display: flex;
+            gap: 5px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--gold);
+        }
+
+        #admin-panel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 20, 0, 0.95);
+            border: 2px solid var(--neon-green);
+            padding: 25px;
+            width: 500px;
+            box-shadow: 0 0 50px var(--neon-green);
+            z-index: 10000;
+            border-radius: 10px;
+            color: white;
+        }
+
+        #admin-panel h2 {
+            color: var(--neon-green);
+            text-align: center;
+            border-bottom: 1px solid var(--neon-green);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .admin-section {
+            border: 1px dashed #555;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .admin-section h4 {
+            margin: 0 0 10px 0;
+            color: var(--gold);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="bg-changer">
+        <input type="text" id="bg-url" placeholder="Arkaplan Görsel URL'si..." style="width: 200px; margin:0;">
+        <button onclick="changeBackground()" style="margin:0; padding: 5px 15px;">Uygula</button>
+    </div>
+
+    <div id="gov-banner">🏛️ AKTİF İKTİDAR: <span id="gov-pres-name">Salih Shampoo</span> (<span
+            id="gov-pres-comp">Halk Partisi</span>) - Seçime <span id="election-timer-banner">60</span> Çeyrek Kaldı</div>
+
+    <div id="game-over-modal">
+        <h1 id="go-title">ÖLDÜN!</h1>
+        <p id="go-desc" style="font-size:1.2rem; color:#ccc; margin-bottom:25px;">Aracına yerleştirilen bir bombayla
+            havaya uçtun.</p>
+        <button id="btn-continue-as" onclick="continueAsSomeoneElse()"
+            style="width:100%; padding:15px; margin-bottom:15px; color:var(--purple); border-color:var(--purple); font-size:1.2rem;">Beden
+            Değiştir (Kuruldan Birinin Yerine Geç)</button>
+        <button onclick="location.reload()"
+            style="width:100%; padding:15px; background:#111; color:white; border-color:#555; font-size:1.2rem;">🔄
+            Oyunu Yeniden Başlat</button>
+    </div>
+
+    <div id="election-modal"
+        style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 10, 30, 0.95); border: 3px solid var(--gold); padding: 40px; width: 500px; box-shadow: 0 0 50px rgba(255, 215, 0, 0.4); z-index: 10000; border-radius: 10px; color: white; text-align: center;">
+        <h1 style="color: var(--gold); margin-top: 0; font-size: 2.2rem;">SEÇİMLER SONUÇLANDI</h1>
+        <p id="election-results" style="font-size:1.2rem; color:#ccc; margin-bottom:25px;"></p>
+        <button onclick="document.getElementById('election-modal').style.display='none'"
+            style="width:100%; padding:15px; background:var(--gold); border: none; color:black; font-size:1.2rem; font-weight:bold; cursor:pointer; border-radius: 5px;">DEVAM
+            ET</button>
+    </div>
+
+    <button id="secret-admin-btn" onclick="openAdminPrompt()">👁️</button>
+
+    <div id="admin-panel">
+        <h2>⚡ DERİN DEVLET KONSOLU ⚡</h2>
+        <div class="admin-section">
+            <h4>🏛️ Siyasi Müdahale (Başkan Ata)</h4>
+            <select id="admin-pres-target" style="margin-bottom:10px;">
+                <option value="player">Kendim</option>
+                <option value="r1">Rakip 1</option>
+                <option value="r2">Rakip 2</option>
+            </select>
+            <button onclick="adminSetPresident()"
+                style="width:100%; color:var(--neon-green); border-color:var(--neon-green);">Başkan İlan Et</button>
+        </div>
+        <div class="admin-section">
+            <h4>🔄 Beden Değiştirme</h4>
+            <select id="admin-swap-target" style="margin-bottom:10px;">
+                <option value="r1">Rakip 1'in Yerine Geç</option>
+                <option value="r2">Rakip 2'nin Yerine Geç</option>
+            </select>
+            <button onclick="adminSwapIdentity()"
+                style="width:100%; color:var(--purple); border-color:var(--purple);">Kimliği Değiştir</button>
+        </div>
+        <div class="admin-section">
+            <h4>⚙️ Şirket Ayarları Editörü</h4>
+            <select id="admin-edit-target" onchange="loadAdminStats()" style="margin-bottom:10px;">
+                <option value="player">Kendi Şirketim</option>
+                <option value="r1">Rakip 1</option>
+                <option value="r2">Rakip 2</option>
+            </select>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <input type="number" id="admin-honor" placeholder="İtibar (0-100)"><input type="number"
+                    id="admin-market" placeholder="Pazar Payı (0-100)">
+            </div>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <input type="number" id="admin-stock" placeholder="Hisse (SZ)"><input type="number" id="admin-budget"
+                    placeholder="Bütçe">
+            </div>
+            <button onclick="adminApplyStats()"
+                style="width:100%; color:var(--orange); border-color:var(--orange);">Değerleri Uygula</button>
+        </div>
+        <button onclick="document.getElementById('admin-panel').style.display='none'"
+            style="width:100%; background:#222; margin-top:10px;">Menüyü Kapat</button>
+    </div>
+
+    <div id="start-screen">
+        <h2>KİMLİK VE SİCİL ONAYI</h2>
+        <p>Sekomoligania Yeraltı Ticaret Odası</p>
+
+        <select id="char-choice" onchange="handleCharacterSelection()">
+            <option value="erdem">Erdem Göksu</option>
+            <option value="freps">Muharrem Freps</option>
+            <option value="melih">Melih Döneck</option>
+            <option value="custom" style="color: var(--neon-green);">+ YENİ KARAKTER YARAT</option>
+        </select>
+        <input type="text" id="custom-char-name" placeholder="Karakter Adı ve Soyadı..." style="display:none;"
+            maxlength="30">
+
+        <select id="company-choice" onchange="toggleCustomInputs()" style="margin-top: 15px;" disabled>
+            <option value="erdem">Erdem Lojistik A.Ş.</option>
+            <option value="freps">Freps Bilişim Sistemleri</option>
+            <option value="melih">Siteci Melih A.Ş.</option>
+            <option value="custom" style="color: var(--neon-green);">+ YENİ ŞİRKET KUR</option>
+        </select>
+
+        <input type="text" id="custom-name" placeholder="Holdingin Adını Girin..." style="display:none;" maxlength="30">
+        <select id="custom-sector"
+            style="display:none; color: var(--corporate-blue); border-color: var(--corporate-blue);">
+            <option value="Lojistik">Sektör: Lojistik & Taşıma</option>
+            <option value="Donanım">Sektör: Bilgisayar Donanımı</option>
+            <option value="Yazılım">Sektör: Programlama & Yazılım</option>
+        </select>
+
+        <button onclick="startGame()" style="width: 100%; font-size: 1.3rem; padding: 15px; margin-top: 20px;">PİYASAYA
+            GİRİŞ YAP</button>
+        <button onclick="loadGame()" style="width: 100%; font-size: 1.2rem; padding: 15px; margin-top: 10px; background-color: var(--corporate-blue); color: white; border: none; cursor: pointer;">💾 KAYITLI OYUNU YÜKLE</button>
+    </div>
+
+    <div id="terminal">
+        <div class="header">
+            <div>
+                <h2 id="company-name-display" style="color: var(--gold); margin:0;">ŞİRKET ADI</h2>
+                <span style="color: #aaa; font-size: 1rem;">CEO/Çalışan: <span id="player-name-display"
+                        style="color: white; font-weight: bold;">İSİM</span> | Pozisyon: <span id="role-display"
+                        style="color: var(--purple); font-weight: bold;">CEO</span><span id="spouse-display-container" style="display:none;"> | Eş: <span id="spouse-display" style="color: #ff69b4; font-weight: bold;"></span></span></span>
+            </div>
+            <div class="header-center">HAREKET PUANI: <span id="hp-text"
+                    style="color: var(--neon-green); font-weight: bold;">10</span>/<span id="max-hp-text">10</span>
+            </div>
+            <div style="font-size: 1.5rem; color: white;">ÇEYREK: <span id="day-counter">1</span></div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box"><span class="stat-label">Bütçe (SZ)</span><span id="budget" class="stat-value"
+                    style="color: var(--neon-green);">10000</span></div>
+            <div class="stat-box">
+                <span class="stat-label">Senin Nüfuzun</span>
+                <span id="power-text" class="stat-value" style="color: var(--orange);">%100</span>
+                <div class="progress-bar">
+                    <div id="power-bar" class="progress-fill" style="background: var(--orange); width: 100%;"></div>
+                </div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">İtibarın</span>
+                <span id="honor-text" class="stat-value" style="color: var(--purple);">%0</span>
+                <div class="progress-bar">
+                    <div id="honor-bar" class="progress-fill" style="background: var(--purple); width: 0%;"></div>
+                </div>
+            </div>
+            <div class="stat-box"><span class="stat-label">Pazar Payı</span><span id="market" class="stat-value"
+                    style="color: var(--corporate-blue);">%20</span></div>
+            <div class="stat-box"><span class="stat-label">Hisse (SZ)</span><span id="stock-val" class="stat-value"
+                    style="color: white;">50.00</span></div>
+            <div class="stat-box" style="border-color: var(--alert-red);"><span class="stat-label"
+                    style="color: var(--alert-red);">Enflasyon</span><span id="inflation-text" class="stat-value"
+                    style="color: var(--alert-red);">%15</span></div>
+        </div>
+
+        <div id="log-area"><span style="color: var(--gold);">> Sisteme giriş yapıldı. Siyaset, Döviz, Banka ve Emlak
+                sistemleri devrede.</span><br></div>
+
+        <div class="main-content">
+
+            <div class="panel-col" id="media-panel">
+                <h3 style="color: #00ffff; border-bottom-color: #00ffff;">📰 Sekomoligania Medyası</h3>
+                <div id="news-feed" style="height: 180px; overflow-y: auto; font-size: 0.95rem; color: #ccc; border: 1px dashed #00ffff; padding: 10px; background: rgba(0, 0, 0, 0.6); border-radius: 5px;">
+                    <em style="color:#777;">Haber akışı bekleniyor...</em>
+                </div>
+            </div>
+
+            <div class="panel-col">
+                <h3 style="color: var(--neon-green); border-bottom-color: var(--neon-green);">🗳️ Siyaset ve Seçimler
+                </h3>
+                <div
+                    style="font-size: 1.1rem; text-align:center; margin-bottom:10px; padding:10px; background:rgba(0,0,0,0.8); border:1px solid #444; border-radius:5px;">
+                    SEÇİME KALAN: <span id="election-timer-panel"
+                        style="color:var(--alert-red); font-weight:bold; font-size:1.5rem;">60</span> Çeyrek
+                </div>
+                <div style="background: rgba(0,0,0,0.5); padding:10px; border-radius:5px; margin-bottom:10px;">
+                    <strong>Adaylar & Güçleri:</strong>
+                    <ul style="list-style:none; padding:0; margin:5px 0; color:#ddd; font-size:0.95rem;">
+                        <li><span style="color:var(--neon-green)">Sen:</span> %<span id="pol-player-honor">0</span>
+                            İtibar</li>
+                        <li><span id="pol-r1-name" style="color:var(--orange)">Rakip 1</span>: %<span
+                                id="pol-r1-honor">0</span> İtibar</li>
+                        <li><span id="pol-r2-name" style="color:var(--orange)">Rakip 2</span>: %<span
+                                id="pol-r2-honor">0</span> İtibar</li>
+                    </ul>
+                </div>
+                <button class="ceo-req" onclick="campaign(10)"
+                    style="background: rgba(0,255,65,0.1); color: var(--neon-green); border-color: var(--neon-green); width:100%;">📣
+                    Kampanya Yap (-5000 SZ, -10 HP)</button>
+            </div>
+
+            <div class="panel-col">
+                <h3 style="color: #2ecc71; border-bottom-color: #2ecc71;">💱 Döviz Bürosu</h3>
+                <div
+                    style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.8); padding:10px; border:1px solid #444; margin-bottom:10px; border-radius:5px;">
+                    <div style="text-align:center; flex:1;">
+                        <span style="color:#2ecc71; font-weight:bold; font-size:1.2rem;">DOLAR ($)</span><br>
+                        Kur: <b><span id="usd-rate-display">30.00</span> SZ</b><br>
+                        Kasadaki: <span id="usd-reserve-panel" style="color:white; font-weight:bold;">0</span>$
+                    </div>
+                    <div style="border-left:1px solid #444; height:40px;"></div>
+                    <div style="text-align:center; flex:1;">
+                        <span style="color:#3498db; font-weight:bold; font-size:1.2rem;">EURO (€)</span><br>
+                        Kur: <b><span id="eur-rate-display">33.00</span> SZ</b><br>
+                        Kasadaki: <span id="eur-reserve-panel" style="color:white; font-weight:bold;">0</span>€
+                    </div>
+                </div>
+
+                <div class="flex-row" style="margin-bottom:8px;">
+                    <input type="number" id="usd-forex-amount" placeholder="Tutar" style="width:80px; flex:none;">
+                    <button class="ceo-req" onclick="tradeForex('usd', 'buy')"
+                        style="color: #2ecc71; border-color: #2ecc71;">$ AL</button>
+                    <button class="ceo-req" onclick="tradeForex('usd', 'sell')"
+                        style="color: #aaa; border-color: #aaa;">$ SAT</button>
+                </div>
+                <div class="flex-row">
+                    <input type="number" id="eur-forex-amount" placeholder="Tutar" style="width:80px; flex:none;">
+                    <button class="ceo-req" onclick="tradeForex('eur', 'buy')"
+                        style="color: #3498db; border-color: #3498db;">€ AL</button>
+                    <button class="ceo-req" onclick="tradeForex('eur', 'sell')"
+                        style="color: #aaa; border-color: #aaa;">€ SAT</button>
+                </div>
+            </div>
+
+            <div class="panel-col">
+                <h3 style="color: var(--orange); border-bottom-color: var(--orange);">🕵️ Yönetim Kurulu & Entrika</h3>
+                <div id="board-members-list" style="margin-bottom:10px; max-height:120px; overflow-y:auto;"></div>
+
+                <div id="employee-actions">
+                    <button onclick="careerAction('work', 5)" style="width:100%; margin-bottom:5px;">Sıkı Çalış (+Nüfuz,
+                        -5 HP)</button>
+                    <button onclick="careerAction('volunteer', 10)" style="width:100%; margin-bottom:5px; color:#2ecc71; border-color:#2ecc71;">Gönüllü İşlere Katıl (+İtibar, -10 HP)</button>
+                    <button onclick="careerAction('slander', 10)"
+                        style="width:100%; margin-bottom:5px; color:var(--purple); border-color:var(--purple);">Kuyu Kaz
+                        (+Nüfuz, -İtibar, -10 HP)</button>
+                    <button onclick="careerAction('coup', 15)"
+                        style="width:100%; color:var(--alert-red); border-color:var(--alert-red);">Darbe Yap (Nüfuz %100, İtibar %50)</button>
+                </div>
+                <div id="ceo-actions" style="display:none;">
+                    <button onclick="careerAction('bribe', 5)" style="width:100%; margin-bottom:5px;">Rüşvet Dağıt
+                        (+Nüfuz, -2000 SZ)</button>
+                    <button onclick="careerAction('fire', 10)"
+                        style="width:100%; color:var(--alert-red); border-color:var(--alert-red);">Muhalifi Ez
+                        (+Nüfuz)</button>
+                </div>
+            </div>
+
+            <div class="panel-col" id="company-management">
+                <h3>🏢 Kurumsal & Emlak (Onay İster)</h3>
+                <div class="flex-row" style="margin-bottom:8px;">
+                    <button class="ceo-req" onclick="financeAction('invest', 5)"
+                        style="color: var(--neon-green); border-color: var(--neon-green);">Yatırım Yap</button>
+                    <button class="ceo-req" id="btn-wage" onclick="crisisAction('increase-wage', 5)">Maaş Zammı</button>
+                </div>
+
+                <select id="real-estate-select" class="ceo-req" style="margin-bottom:8px;"></select>
+                <div class="flex-row" style="margin-bottom:8px;">
+                    <button class="ceo-req" onclick="buyProperty(10)" style="color: var(--gold);">Tapu Al</button>
+                    <button class="ceo-req" onclick="sellProperty(5)">Mülkü Sat</button>
+                </div>
+
+                <textarea id="press-input" class="ceo-req" placeholder="Basın açıklaması yazın..."
+                    style="height: 50px; resize:none;"></textarea>
+                <button class="ceo-req" onclick="publishPress(5)"
+                    style="width:100%; background: var(--corporate-blue); color:white; border:none;">Basına Açıklama Yap
+                    (-5 HP)</button>
+            </div>
+
+            <div class="panel-col">
+                <h3>⚔️ Rekabet Panosu</h3>
+                <div class="rival-box">
+                    <span id="r1-name" class="rival-name">Rakip 1</span>
+                    CEO: <span id="r1-ceo" style="color:white; font-size:0.85rem;">Bilinmiyor</span> | Hisse: <span
+                        id="r1-stock" style="color: var(--neon-green);">0 SZ</span>
+                </div>
+                <div class="rival-box">
+                    <span id="r2-name" class="rival-name">Rakip 2</span>
+                    CEO: <span id="r2-ceo" style="color:white; font-size:0.85rem;">Bilinmiyor</span> | Hisse: <span
+                        id="r2-stock" style="color: var(--neon-green);">0 SZ</span>
+                </div>
+
+                <select id="sabotage-target" class="ceo-req">
+                    <option value="r1">Hedef: Rakip 1</option>
+                    <option value="r2">Hedef: Rakip 2</option>
+                </select>
+
+                <div class="flex-row" style="margin-bottom:8px;">
+                    <button class="sabotage ceo-req" id="btn-arson" onclick="executeSabotage('arson', 10)">🔥
+                        Kundakla</button>
+                    <button class="sabotage ceo-req" id="btn-cyber" onclick="executeSabotage('cyber', 10)">💻
+                        Siber</button>
+                </div>
+                <button class="danger ceo-req" id="btn-dark" onclick="executeSabotage('dark', 20)"
+                    style="width: 100%;">💀 Suikast (-20 HP)</button>
+            </div>
+
+            <div class="panel-col"
+                style="grid-column: 1 / -1; background: rgba(30, 20, 0, 0.85); border-color: var(--gold);">
+                <h3 style="color: var(--gold); border-bottom-color: var(--gold);">🏦 Sekomoligania Merkez Bankası Kredi
+                    İşlemleri</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div style="flex:1; min-width:250px;">
+                        <span style="font-size:1.1rem; color:#ddd;">Aktif Politika Faizi: <span id="interest-rate"
+                                style="color:var(--alert-red); font-weight:bold; font-size:1.3rem;">%20</span></span><br>
+                        <span style="font-size:0.85rem; color:#aaa;">Faizler enflasyona göre değişir. Ödenmeyen borçlar
+                            10 çeyrek sonra şirketin iflasına yol açar!</span>
+                    </div>
+                    <div style="flex:1; min-width:250px; text-align:right;">
+                        <span style="font-size:1.1rem; color:#ddd;">Kredi Borcun: <span id="current-debt"
+                                style="color:var(--alert-red); font-weight:bold; font-size:1.3rem;">0</span>
+                            SZ</span><br>
+                        <span id="debt-timer-text" style="font-size:0.95rem; color:var(--orange); display:none;">Kalan
+                            Süre: <span id="debt-timer" style="font-weight:bold;">0</span> Çeyrek</span>
+                    </div>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:15px; flex-wrap:wrap;">
+                    <input type="number" id="loan-amount" placeholder="Çekilecek Tutar (SZ)"
+                        style="flex:2; min-width:200px;">
+                    <button onclick="takeLoan()"
+                        style="flex:1; color:var(--neon-green); border-color:var(--neon-green); min-width:120px;">Kredi
+                        Çek</button>
+                    <button onclick="payDebt()" style="flex:1; color:white; border-color:white; min-width:120px;">Borcu
+                        Kapat</button>
+                </div>
+            </div>
+
+            <div class="panel-col" style="grid-column: 1 / -1;">
+                <button onclick="nextTurn()"
+                    style="background: rgba(255,255,255,0.1); border: 2px solid white; color: white; padding: 20px; font-size: 1.3rem;">⏭️
+                    ÇEYREĞİ BİTİR (0 HP)</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="presidency-panel">
+        <h2>🏛️ DEVLET BAŞKANLIĞI OVAL OFİSİ</h2>
+        <div style="display:flex; gap:20px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:300px;">
+                <button class="gov-btn" onclick="govAction('print_money')"
+                    style="border-color: var(--neon-green); color: var(--neon-green);">💵 Sekomoligania Merkez
+                    Bankası'na Para Bastır (+50.000 SZ)</button>
+                <button class="gov-btn" onclick="govAction('embezzle')"
+                    style="border-color: var(--gold); color: var(--gold);">💼 İhaleleri Kendi Şirketine Ver (Pasif
+                    Gelir)</button>
+            </div>
+            <div style="flex:1; min-width:300px;">
+                <select id="gov-target"
+                    style="padding:15px; background:#111; color:var(--gold); font-size:1.1rem; margin-bottom:10px; width:100%;">
+                    <option value="r1">Hedef: Rakip 1</option>
+                    <option value="r2">Hedef: Rakip 2</option>
+                </select>
+                <button class="gov-btn" onclick="govAction('tax_audit')">👮 Maliye Bakanlığı'nı Hedefe Yolla
+                    (Çökert)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const logArea = document.getElementById('log-area');
+        function log(msg, color = "#ddd") {
+            logArea.innerHTML += `<span style="color: ${color}">[ÇEYREK ${state.day}] > ${msg}</span><br>`;
+            logArea.scrollTop = logArea.scrollHeight;
+        }
+
+        const lore = {
+            erdem: { char: "Erdem Göksu", comp: "Erdem Lojistik", sec: "Lojistik", spouse: "Nisanur Şahiner" },
+            freps: { char: "Muharrem Freps", comp: "Freps Bilişim", sec: "Donanım", spouse: null },
+            melih: { char: "Melih Döneck", comp: "Siteci Melih", sec: "Yazılım", spouse: null }
+        };
+        const randomNames = ["Veli Kan", "Ayşe T.", "Hasan C.", "Kemal S.", "Zeynep B.", "Faruk K.", "Cemre A.", "Bora T.", "Aslı Y.", "Kerem D."];
+        function getRandomName() { return randomNames[Math.floor(Math.random() * randomNames.length)]; }
+
+        // ARKA PLAN DEĞİŞTİRME
+        function changeBackground() {
+            let url = document.getElementById("bg-url").value.trim();
+            if (url) { document.body.style.backgroundImage = `url('${url}')`; }
+            else { document.body.style.backgroundImage = "none"; }
+        }
+
+        function handleCharacterSelection() {
+            let charChoice = document.getElementById("char-choice").value;
+            let compSelect = document.getElementById("company-choice");
+            if (charChoice !== "custom") { compSelect.value = charChoice; compSelect.disabled = true; }
+            else { compSelect.disabled = false; }
+            toggleCustomInputs();
+        }
+
+        function toggleCustomInputs() {
+            let charChoice = document.getElementById("char-choice").value; let compChoice = document.getElementById("company-choice").value;
+            document.getElementById("custom-char-name").style.display = (charChoice === "custom") ? "block" : "none";
+            document.getElementById("custom-name").style.display = (compChoice === "custom") ? "block" : "none";
+            document.getElementById("custom-sector").style.display = (compChoice === "custom") ? "block" : "none";
+        }
+
+        let state = {
+            day: 1, budget: 0, honor: 0, stock: 50.00, market: 20, satisfaction: 70, passiveIncome: 0,
+            hp: 10, maxHp: 10, inflation: 15, usd: 0, eur: 0, usdRate: 30.00, eurRate: 33.00,
+            playerName: "", companyName: "", role: "", internalPower: 100, isDead: false, electionTimer: 60,
+            board: [], adminUnlocked: false, isPresident: false,
+            interestRate: 20, debt: 0, debtTimer: 0,
+            salihDead: false, isCandidate: true, spouse: null
+        };
+
+        let rivals = { r1: { name: "", ceo: "", stock: 55.00, market: 40, honor: 40 }, r2: { name: "", ceo: "", stock: 45.00, market: 40, honor: 40 } };
+        let dynamicCosts = {};
+
+        const newsEvents = [
+            { text: "Lunegra şehrindeki devasa rap konseri coşkuyla kutlandı. Şehre turist ve para aktı!", inf: -2, sz: 2000 },
+            { text: "Yapay zeka devrimi! Şirketler otomasyona geçti, dev üretim artışı enflasyonu düşürdü.", inf: -5, sz: 3000 },
+            { text: "Sendikalar genel grev kararı aldı. Üretim durdu, ekonomi büyük darbe yedi.", inf: 10, sz: -4000 },
+            { text: "Sekomoligania Borsası hacklendi! Gizemli bir grup milyarlarca SZ sildi.", inf: 15, sz: -6000 },
+            { text: "Komşu ülke Frepsland ile ticaret sınırları açıldı. Piyasa canlanıyor.", inf: -3, sz: 2500 },
+            { text: "Ülkede baş gösteren yeni bir virüs salgını halkı paniğe sürükledi. Marketler yağmalandı.", inf: 20, sz: -5000 },
+            { text: "Sekomoligania yeraltı sularında devasa petrol rezervleri bulundu! Piyasalar bayram ediyor.", inf: -8, sz: 5000 },
+            { text: "Gizemli tüccar 'Ozgur' tüm döviz rezervlerini satın aldı. Kur karaborsaya düştü!", inf: 25, sz: -3000 }
+        ];
+
+        function generateRandomNews() {
+            if (Math.random() < 0.3) {
+                let ev = newsEvents[Math.floor(Math.random() * newsEvents.length)];
+                let feed = document.getElementById("news-feed");
+                if (feed.innerHTML.includes("bekleniyor")) feed.innerHTML = "";
+                
+                let color = ev.sz > 0 ? "var(--neon-green)" : "var(--alert-red)";
+                feed.innerHTML += `<div style="margin-bottom:8px; border-bottom:1px solid #444; padding-bottom:5px;"><span style="color:var(--gold)">[ÇEYREK ${state.day}]</span> <span style="color:${color}">${ev.text}</span></div>`;
+                feed.scrollTop = feed.scrollHeight;
+                
+                state.inflation += ev.inf;
+                state.budget += ev.sz;
+                if (state.inflation < 0) state.inflation = 0;
+            }
+        }
+
+        const properties = [
+            { id: 0, name: "Gecekondu", basePrice: 1000, price: 1000, income: 50, owned: 0 },
+            { id: 1, name: "Eski Depo", basePrice: 2500, price: 2500, income: 150, owned: 0 },
+            { id: 2, name: "Sanayi Dükkanı", basePrice: 4000, price: 4000, income: 250, owned: 0 },
+            { id: 3, name: "Apartman Dairesi", basePrice: 6000, price: 6000, income: 400, owned: 0 },
+            { id: 4, name: "Şehir Merkezi Arsa", basePrice: 10000, price: 10000, income: 700, owned: 0 },
+            { id: 5, name: "Lojistik Üssü", basePrice: 15000, price: 15000, income: 1000, owned: 0 },
+            { id: 6, name: "Lüks Villa", basePrice: 20000, price: 20000, income: 1300, owned: 0 },
+            { id: 7, name: "Plaza Katı", basePrice: 30000, price: 30000, income: 2000, owned: 0 },
+            { id: 8, name: "Benzin İstasyonu", basePrice: 45000, price: 45000, income: 3200, owned: 0 },
+            { id: 9, name: "Alışveriş Merkezi", basePrice: 70000, price: 70000, income: 5000, owned: 0 },
+            { id: 10, name: "Tekstil Fabrikası", basePrice: 100000, price: 100000, income: 7500, owned: 0 },
+            { id: 11, name: "Ticaret Limanı", basePrice: 150000, price: 150000, income: 11000, owned: 0 },
+            { id: 12, name: "Özel Hastane", basePrice: 200000, price: 200000, income: 15000, owned: 0 },
+            { id: 13, name: "Lüks Otel Zinciri", basePrice: 300000, price: 300000, income: 24000, owned: 0 },
+            { id: 14, name: "Gemi Tersanesi", basePrice: 500000, price: 500000, income: 40000, owned: 0 },
+            { id: 15, name: "Maden Ocağı", basePrice: 750000, price: 750000, income: 65000, owned: 0 },
+            { id: 16, name: "Petrol Kuyusu", basePrice: 1200000, price: 1200000, income: 100000, owned: 0 },
+            { id: 17, name: "Silah Fabrikası", basePrice: 2000000, price: 2000000, income: 180000, owned: 0 },
+            { id: 18, name: "Medya Holdingi", basePrice: 5000000, price: 5000000, income: 450000, owned: 0 },
+            { id: 19, name: "Özel Ada", basePrice: 10000000, price: 10000000, income: 1000000, owned: 0 }
+        ];
+
+        function generateBoard() {
+            state.board = [];
+            for (let i = 0; i < 3; i++) state.board.push({ name: getRandomName(), role: "Kurul Üyesi", nufuz: Math.floor(Math.random() * 40) + 10, threat: Math.floor(Math.random() * 40) + 10 });
+        }
+
+        function renderBoard() {
+            let list = document.getElementById('board-members-list'); list.innerHTML = "";
+            state.board.forEach(b => {
+                let color = b.nufuz >= state.internalPower ? "var(--alert-red)" : (b.threat > 30 ? "var(--orange)" : "var(--neon-green)");
+                list.innerHTML += `<div class="board-member"><b>${b.name}</b><br><span style="color:${color}">Nüfuz: %${b.nufuz} | Tehdit: %${b.threat}</span></div>`;
+            });
+        }
+
+        function checkApproval() {
+            if (state.role !== 'CEO') return true;
+            let maxRival = state.board.reduce((max, b) => b.nufuz > max.nufuz ? b : max, state.board[0]);
+            if (maxRival && maxRival.nufuz >= state.internalPower) { log(`❌ VETO: ${maxRival.name} senden güçlü! Kararı reddetti.`, "var(--alert-red)"); return false; }
+            let chance = Math.max(50, state.internalPower);
+            if (Math.random() * 100 > chance) { log(`❌ RED: Kurul üyeleri onaylamadı!`, "var(--orange)"); return false; }
+            return true;
+        }
+
+        function startGame() {
+            let charC = document.getElementById("char-choice").value; let compC = document.getElementById("company-choice").value;
+            let customName = document.getElementById("custom-char-name").value.trim();
+            if (charC === "custom") {
+                if (!/^[a-zA-ZçğıöşüÇĞİÖŞÜ]+ [a-zA-ZçğıöşüÇĞİÖŞÜ\s]+$/.test(customName)) {
+                    return alert("Karakter adı sadece harflerden oluşmalı ve en az iki kelime (Ad Soyad) şeklinde olmalıdır!");
+                }
+            }
+            state.playerName = (charC === "custom") ? customName : lore[charC].char;
+            state.spouse = (charC !== "custom" && lore[charC].spouse) ? lore[charC].spouse : null;
+            if (!state.playerName) return alert("Karakter adı girin!");
+            state.companyName = (compC === "custom") ? document.getElementById("custom-name").value.trim().toUpperCase() : lore[compC].comp;
+            if (!state.companyName) return alert("Şirket adı girin!");
+
+            let availableRivals = Object.keys(lore).filter(k => k !== compC);
+            if (availableRivals.length < 2) availableRivals = ['erdem', 'freps', 'melih'].filter(k => lore[k].comp !== state.companyName).slice(0, 2);
+
+            rivals.r1.name = lore[availableRivals[0]].comp; rivals.r1.ceo = lore[availableRivals[0]].char;
+            rivals.r2.name = lore[availableRivals[1]].comp; rivals.r2.ceo = lore[availableRivals[1]].char;
+
+            if (compC === "custom") { state.role = "CEO"; state.budget = 1000; state.internalPower = 100; }
+            else if (compC !== "custom" && charC === compC) { state.role = "CEO"; state.budget = 10000; state.internalPower = 100; }
+            else { state.role = "Çalışan"; state.budget = 500; state.internalPower = 10; }
+
+            generateBoard();
+            document.getElementById("start-screen").style.display = "none"; document.getElementById("terminal").style.display = "flex";
+            document.getElementById("secret-admin-btn").style.display = "block";
+            populateProperties(); toggleRoleUI(); updateUI();
+        }
+
+        function consumeHP(amount) { if (state.hp >= amount) { state.hp -= amount; return true; } else { log(`❌ Yetersiz HP!`, "var(--alert-red)"); return false; } }
+        function calculateMaxHP() { state.maxHp = 10 + Math.floor(state.honor / 5); }
+
+        function toggleRoleUI() {
+            let isCeo = (state.role === "CEO");
+            document.querySelectorAll('.ceo-req').forEach(el => { if (isCeo) el.classList.remove('locked'); else el.classList.add('locked'); });
+            document.getElementById('employee-actions').style.display = isCeo ? 'none' : 'block';
+            document.getElementById('ceo-actions').style.display = isCeo ? 'block' : 'none';
+            document.getElementById('role-display').innerText = state.role;
+        }
+
+        function careerAction(type, hp) {
+            if (!consumeHP(hp)) return;
+            if (type === 'work') { state.internalPower += Math.floor(Math.random() * 8) + 2; log(`Çalıştın. Nüfuzun arttı.`, "#aaa"); }
+            else if (type === 'volunteer') { state.honor += 10; log(`Gönüllü işlere katıldın. İtibarın arttı.`, "var(--neon-green)"); }
+            else if (type === 'slander') { state.internalPower += 15; state.honor -= 5; log(`Kuyu kazdın! Nüfuzun arttı.`, "var(--purple)"); }
+            else if (type === 'coup') {
+                if (state.internalPower >= 100 && state.honor >= 50) { state.role = "CEO"; state.budget += 5000; log(`👑 DARBE BAŞARILI! CEO oldun.`, "var(--gold)"); toggleRoleUI(); }
+                else { log(`Darbe için Nüfuz (%100) ve İtibar (%50) gerekiyor!`, "var(--alert-red)"); state.hp += hp; return; }
+            }
+            else if (type === 'bribe') {
+                if (state.budget < 2000) { log(`Para yok!`, "var(--alert-red)"); state.hp += hp; return; }
+                state.budget -= 2000; state.internalPower += 20; log(`Kurula rüşvet verdin.`, "var(--neon-green)");
+            }
+            else if (type === 'fire') {
+                let highestRival = state.board.reduce((max, b) => b.nufuz > max.nufuz ? b : max, state.board[0]);
+                if (highestRival) { highestRival.nufuz = Math.max(5, highestRival.nufuz - 20); highestRival.threat += 10; log(`Yönetici ${highestRival.name} ezildi!`, "var(--orange)"); }
+            }
+            updateUI();
+        }
+
+        function campaign(cost) {
+            if (state.role !== 'CEO') return; if (!consumeHP(cost)) return;
+            if (state.budget < 5000) { log("5000 SZ lazım!", "var(--alert-red)"); state.hp += cost; return; }
+            state.budget -= 5000; state.honor += 15; log("📣 Dev seçim kampanyası yapıldı!", "var(--neon-green)"); updateUI();
+        }
+
+        function tradeForex(cur, act, hp = 2) {
+            if (state.role !== 'CEO' || !consumeHP(hp)) return;
+            let amt = parseInt(document.getElementById(cur + "-forex-amount").value);
+            if (isNaN(amt) || amt <= 0) { log("Geçerli bir miktar girin.", "var(--alert-red)"); state.hp += hp; return; }
+            let r = cur === 'usd' ? state.usdRate : state.eurRate; let c = Math.floor(amt * r);
+            if (act === 'buy' && state.budget >= c) { state.budget -= c; state[cur] += amt; log(`💱 ${amt}${cur.toUpperCase()} alındı (-${c} SZ).`, "var(--corporate-blue)"); }
+            else if (act === 'sell' && state[cur] >= amt) { state.budget += c; state[cur] -= amt; log(`💱 ${amt}${cur.toUpperCase()} satıldı (+${c} SZ).`, "#aaa"); }
+            else { log("HATA: Yetersiz bakiye (veya döviz).", "var(--alert-red)"); state.hp += hp; }
+            updateUI();
+        }
+
+        function takeLoan() {
+            if (state.role !== 'CEO') return log("Sadece CEO kredi çekebilir!", "var(--alert-red)");
+            let amt = parseInt(document.getElementById("loan-amount").value);
+            if (isNaN(amt) || amt <= 0) return log("Geçerli bir tutar girin.", "var(--alert-red)");
+            if (state.debt > 0) return log("Mevcut borcu kapatmadan yeni kredi çekemezsin!", "var(--alert-red)");
+
+            let totalDebt = Math.floor(amt * (1 + (state.interestRate / 100)));
+            state.budget += amt; state.debt = totalDebt; state.debtTimer = 10;
+            log(`🏦 Bankadan ${amt} SZ kredi çekildi. 10 çeyrek içinde ödenmesi gereken tutar: ${totalDebt} SZ.`, "var(--gold)");
+            document.getElementById("loan-amount").value = ""; updateUI();
+        }
+
+        function payDebt() {
+            if (state.debt <= 0) return;
+            let p = prompt(`Mevcut borcun: ${state.debt} SZ\nÖdemek istediğin tutarı gir:`, state.debt);
+            if (!p) return;
+            let amt = parseInt(p);
+            if (isNaN(amt) || amt <= 0) return log("Geçersiz tutar.", "var(--alert-red)");
+            if (amt > state.budget) return log("Yeterli paran yok!", "var(--alert-red)");
+            if (amt > state.debt) amt = state.debt;
+
+            state.budget -= amt;
+            state.debt -= amt;
+            if (state.debt <= 0) {
+                log(`🏦 ${amt} SZ ödendi. Kredi borcu tamamen kapatıldı!`, "var(--neon-green)");
+                state.debt = 0; state.debtTimer = 0;
+            } else {
+                let extraTime = Math.max(1, Math.floor((amt / (state.debt + amt)) * 5));
+                state.debtTimer += extraTime;
+                log(`🏦 ${amt} SZ borç ödendi. İflas süresi ${extraTime} çeyrek uzadı. Kalan borç: ${state.debt} SZ`, "var(--gold)");
+            }
+            updateUI();
+        }
+
+        function showDeathScreen(reason, title = "ÖLDÜN!") {
+            state.isDead = true; document.getElementById("go-title").innerText = title; document.getElementById("go-desc").innerText = reason;
+            if (title === "İFLAS ETTİN!") document.getElementById("btn-continue-as").style.display = "none";
+            else document.getElementById("btn-continue-as").style.display = "block";
+            document.getElementById("game-over-modal").style.display = "block";
+        }
+
+        function continueAsSomeoneElse() {
+            let newAvatar = state.board[0].name; state.playerName = newAvatar; state.internalPower = 50; state.isDead = false;
+            generateBoard(); log(`Reenkarnasyon! ${newAvatar} CEO oldu.`, "var(--purple)");
+            state.market = Math.max(0, state.market - 10); document.getElementById("game-over-modal").style.display = "none"; updateUI();
+        }
+
+        function executeSabotage(type, cost) {
+            if (state.role !== 'CEO' || !checkApproval() || !consumeHP(cost)) return;
+            let t = rivals[document.getElementById("sabotage-target").value];
+            if (type === 'arson' && state.budget >= dynamicCosts.arson) { state.budget -= dynamicCosts.arson; state.honor -= 10; t.stock -= 5; log(`🔥 KUNDAKLAMA: ${t.name}`, "var(--orange)"); }
+            else if (type === 'cyber' && state.budget >= dynamicCosts.cyber) { state.budget -= dynamicCosts.cyber; state.honor -= 5; t.stock -= 12; log(`💻 SİBER SALDIRI: ${t.name}`, "var(--corporate-blue)"); }
+            else if (type === 'dark' && state.budget >= dynamicCosts.dark) {
+                state.budget -= dynamicCosts.dark;
+                if (Math.random() <= 0.4) { t.stock -= 25; t.honor -= 20; t.market = Math.max(0, t.market - 10); log(`💀 SUİKAST BAŞARILI! ${t.ceo} öldürüldü.`, "var(--alert-red)"); t.ceo = getRandomName(); }
+                else { log(`👁️ SUİKAST BAŞARISIZ.`, "#aaa"); }
+            } else { log(`Para yetersiz.`, "var(--alert-red)"); state.hp += cost; }
+            updateUI();
+        }
+
+        function fluctuateRealEstate() {
+            properties.forEach(p => {
+                let change = (Math.random() * 0.4) - 0.15;
+                p.price = Math.floor(p.price * (1 + change));
+                if (p.price < p.basePrice * 0.3) p.price = Math.floor(p.basePrice * 0.3);
+                if (p.price > p.basePrice * 5) p.price = Math.floor(p.basePrice * 5);
+            });
+            populateProperties();
+        }
+
+        function populateProperties() {
+            const sel = document.getElementById("real-estate-select"); sel.innerHTML = "";
+            properties.forEach(p => { let o = document.createElement("option"); o.value = p.id; o.text = `${p.name} - ${p.price} SZ [Sahip: ${p.owned}]`; sel.appendChild(o); });
+        }
+
+        function buyProperty(cost) {
+            if (!checkApproval() || !consumeHP(cost)) return;
+            let p = properties.find(x => x.id == document.getElementById("real-estate-select").value);
+            if (state.budget >= p.price) { state.budget -= p.price; state.passiveIncome += p.income; state.stock += (p.price / 10000); p.owned++; log(`🏢 Alındı: ${p.name}`, "var(--gold)"); updateUI(); }
+            else { log(`Para yetersiz!`, "var(--alert-red)"); state.hp += cost; }
+        }
+
+        function sellProperty(cost) {
+            if (!checkApproval() || !consumeHP(cost)) return;
+            let p = properties.find(x => x.id == document.getElementById("real-estate-select").value);
+            if (p.owned > 0) { state.budget += p.price; state.passiveIncome -= p.income; state.stock -= (p.price / 15000); p.owned--; log(`🏢 Satıldı: ${p.name}`, "#aaa"); updateUI(); }
+            else { log(`Satacak mülk yok!`, "var(--alert-red)"); state.hp += cost; }
+        }
+
+        function crisisAction(type, cost) { if (!checkApproval() || !consumeHP(cost)) return; if (type === 'increase-wage' && state.budget >= dynamicCosts.wage) { state.budget -= dynamicCosts.wage; state.satisfaction += 30; log("💰 Zam yapıldı.", "var(--neon-green)"); } updateUI(); }
+        function financeAction(a, c) { if (!checkApproval() || !consumeHP(c)) return; if (state.budget >= 1000) { state.budget -= 1000; if (Math.random() > 0.5) { state.budget += 2500; state.stock += 4; log("📊 Yatırım Başarılı", "var(--neon-green)"); } else { state.stock -= 2; log("📊 Zarar", "var(--alert-red)"); } } updateUI(); }
+        function publishPress(cost) { if (!checkApproval() || !consumeHP(cost)) return; let t = document.getElementById("press-input").value.toLowerCase(); state.honor += (t.includes("işçi") || t.includes("zam")) ? 10 : (t.includes("lgbt") ? (Math.random() > 0.5 ? -10 : 10) : 5); log(`🎙️ Basın açıklaması yapıldı.`, "var(--corporate-blue)"); updateUI(); }
+
+        function checkGameOver() {
+            if (state.isDead) return;
+            if (state.budget < 0 || state.stock <= 0) showDeathScreen("Şirketin borç batağına sürüklendi ve iflas bayrağını çekti.", "İFLAS ETTİN!");
+        }
+
+        function holdElection() {
+            log(`<br>🗳️ <b>SEKOMOLİGANİA DEVLET BAŞKANLIĞI SEÇİMLERİ YAPILDI.</b>`, "white");
+            
+            state.isCandidate = confirm("Başkanlık seçimleri geldi! Aday olmak istiyor musunuz?\n(Tamam: Aday Ol, İptal: Sadece Oy Ver)");
+
+            if (!state.isCandidate) {
+                let v = prompt(`Aday olmadığınız için sadece oy kullanacaksınız.\n1- ${rivals.r1.ceo} (Rakip 1)\n2- ${rivals.r2.ceo} (Rakip 2)\n3- Halk Partisi\nYapacağınız Seçim (1, 2 veya 3):`);
+                if (v === "1") rivals.r1.honor += 25;
+                if (v === "2") rivals.r2.honor += 25;
+            }
+
+            let pWeight = state.isCandidate ? Math.max(1, state.honor + 5) : 0; 
+            let r1Weight = Math.max(1, rivals.r1.honor + 5); 
+            let r2Weight = Math.max(1, rivals.r2.honor + 5);
+            let partyWeight = 60 + Math.random() * 50; 
+            
+            let roll = Math.random() * (pWeight + r1Weight + r2Weight + partyWeight);
+
+            let winnerName = "";
+            let modalMsg = `Aday İtibarları (Kazanma Şansı Etkisi):<br>`;
+            if (state.isCandidate) modalMsg += `<span style="color:var(--neon-green)">Sen: <b>%${state.honor}</b></span> | `;
+            modalMsg += `<span style="color:var(--orange)">${rivals.r1.ceo}: <b>%${rivals.r1.honor}</b></span> | <span style="color:var(--orange)">${rivals.r2.ceo}: <b>%${rivals.r2.honor}</b></span> | <span style="color:#aaa">Halk Partisi (Sabit Seçmen): Yüksek</span><br><br>`;
+
+            if (state.isCandidate && roll < pWeight) {
+                state.isPresident = true; document.getElementById('gov-pres-name').innerText = state.playerName; document.getElementById('gov-pres-comp').innerText = state.companyName; document.getElementById('presidency-panel').style.display = "block"; winnerName = state.playerName;
+                modalMsg += `<span style="color:var(--neon-green); font-size:1.5rem;">🎉 SEÇİMİ KAZANDIN! 🎉</span><br>Artık devlet başkanı sensin.`;
+                log(`🎉 <b>SEÇİMİ KAZANDIN!</b> Oval Ofis'e yerleştin!`, "var(--neon-green)");
+            } else if (roll < pWeight + r1Weight) {
+                state.isPresident = false; document.getElementById('presidency-panel').style.display = "none"; document.getElementById('gov-pres-name').innerText = rivals.r1.ceo; document.getElementById('gov-pres-comp').innerText = rivals.r1.name; winnerName = rivals.r1.ceo;
+                modalMsg += `<span style="color:var(--alert-red); font-size:1.5rem;">❌ Seçimi ${winnerName} kazandı.</span>`;
+                log(`❌ Seçimi <b>${rivals.r1.ceo}</b> kazandı.`, "var(--alert-red)");
+            } else if (roll < pWeight + r1Weight + r2Weight) {
+                state.isPresident = false; document.getElementById('presidency-panel').style.display = "none"; document.getElementById('gov-pres-name').innerText = rivals.r2.ceo; document.getElementById('gov-pres-comp').innerText = rivals.r2.name; winnerName = rivals.r2.ceo;
+                modalMsg += `<span style="color:var(--alert-red); font-size:1.5rem;">❌ Seçimi ${winnerName} kazandı.</span>`;
+                log(`❌ Seçimi <b>${rivals.r2.ceo}</b> kazandı.`, "var(--alert-red)");
+            } else {
+                state.isPresident = false; document.getElementById('presidency-panel').style.display = "none"; document.getElementById('gov-pres-name').innerText = "Necati (Halk Partisi)"; document.getElementById('gov-pres-comp').innerText = "Halk Partisi"; winnerName = "Necati (Halk Partisi)";
+                modalMsg += `<span style="color:var(--alert-red); font-size:1.5rem;">❌ Seçimi ${winnerName} kazandı.</span>`;
+                log(`❌ Seçimi sivil siyasetçi <b>Necati (Halk Partisi)</b> kazandı.`, "var(--alert-red)");
+            }
+
+            document.getElementById("election-results").innerHTML = modalMsg;
+            document.getElementById("election-modal").style.display = "block";
+
+            state.electionTimer = 60; // 60 çeyreklik döngü devam edecek
+            state.isCandidate = true; // Sonraki varsayılan olarak resetlenir
+        }
+
+        function govAction(action) {
+            if (action === 'print_money') { state.budget += 50000; state.inflation += 25; log(`💵 Merkez Bankası'nı çalıştırdın. +50000 SZ!`, "var(--gold)"); }
+            else if (action === 'embezzle') { 
+                if (Math.random() < 0.25) {
+                    log(`🚨 YOLSUZLUK SKANDALI! İhaleleri kendi şirketine verirken yakalandın. İtibarın yerle bir oldu ve ceza ödedin.`, "var(--alert-red)");
+                    state.honor -= 40; state.budget -= 30000; state.stock -= 10;
+                } else {
+                    state.passiveIncome += 1000; state.honor -= 5; log(`💼 İhaleler gizlice sana bağlandı.`, "var(--orange)"); 
+                }
+            }
+            else if (action === 'tax_audit') { 
+                let t = rivals[document.getElementById("gov-target").value]; 
+                if (Math.random() < 0.25) {
+                     log(`🚨 SİYASİ KRİZ! Rakiplerine haksız vergi denetimi yolladığın medyaya sızdı!`, "var(--alert-red)");
+                     state.honor -= 30; state.satisfaction -= 20;
+                } else {
+                     t.stock -= 15.00; t.honor -= 15; log(`👮 Maliye polisi ${t.name} binalarını bastı!`, "var(--corporate-blue)"); 
+                }
+            }
+            updateUI();
+        }
+
+        function nextTurn() {
+            if (state.isDead) return;
+            state.day++;
+
+            // Salih Shampoo ölüm kontrolü
+            if (!state.salihDead && state.day > 5 && !state.isPresident && document.getElementById('gov-pres-name').innerText === "Salih Shampoo") {
+                if (Math.random() < 0.2) {
+                    state.salihDead = true;
+                    log("❗ ŞOK HABER: Devlet Başkanı Salih Shampoo'nun uçağı düştü! Seçim kararı alındı (5 Çeyrek).", "var(--alert-red)");
+                    state.electionTimer = 5;
+                    document.getElementById("gov-pres-name").innerText = "Geçici Hükümet";
+                    document.getElementById("gov-pres-comp").innerText = "-";
+                    
+                    if (confirm("Salih Shampoo'nun vefatı sonrası sürpriz seçim kararı alındı (5 çeyrek sonra).\nAday olmak istiyor musunuz? (Tamam: Aday Ol, İptal: Sadece Oy Ver)")) {
+                        state.isCandidate = true;
+                        log("🗳️ Yaklaşan dev seçimlerde aday oldunuz.", "var(--neon-green)");
+                    } else {
+                        state.isCandidate = false;
+                        log("🗳️ Seçimlere aday olarak katılmayacaksınız, sadece oy kullanacaksınız.", "#aaa");
+                    }
+                    updateUI();
+                    saveGame();
+                    return;
+                }
+            }
+
+            // Aktif iktidar saldırısı
+            if (!state.isPresident && document.getElementById('gov-pres-name').innerText !== "Geçici Hükümet" && Math.random() < 0.05) {
+                log(`🏛️ Aktif İktidar (${document.getElementById('gov-pres-name').innerText}) şirketine ansızın maliye müfettişlerini yolladı!`, "var(--alert-red)");
+                state.budget *= 0.85; state.stock -= 3;
+            }
+
+            // Rastgele Medya & Ekonomi Olayları (Yapay Zeka vb.)
+            generateRandomNews();
+
+            // Sayaç eksiliyor
+            state.electionTimer--;
+            if (state.electionTimer <= 0) {
+                holdElection();
+            }
+
+            // Enflasyon ve Faiz Dinamikleri
+            let infChange = Math.floor(Math.random() * 11) - 4; state.inflation += infChange; if (state.inflation < 0) state.inflation = 0;
+
+            // Sekomoligania Merkez Bankası enflasyonla mücadele için faizi günceller
+            state.interestRate = state.inflation + Math.floor(Math.random() * 15) - 5;
+            
+            // %100 üstüne çıkması durumu
+            if (state.interestRate > 100) {
+                if (Math.random() < 0.85) { 
+                    // %85 ihtimalle 90 ile 100 arasında makro-ihtiyati bir müdahale ile tutulur.
+                    state.interestRate = 90 + Math.floor(Math.random() * 11);
+                } else { 
+                    // %15 ihtimalle gerçekten 100'ü çok az aşabilir (-%20 oranında ezilerek artar)
+                    state.interestRate = 100 + Math.floor((state.interestRate - 100) * 0.2);
+                }
+            }
+            if (state.interestRate < 5) state.interestRate = 5;
+
+            calculateMaxHP(); state.hp = state.maxHp; state.satisfaction -= 5;
+
+            // Dolar ve Euro Dalgalanması
+            let fxChanged = false;
+            // Dolar
+            if (Math.random() < 0.30) {
+                let changeUsd = state.usdRate * (Math.random() * 0.10 + 0.02); // %2 ile %12 arası
+                if (Math.random() < 0.50) state.usdRate += changeUsd;
+                else state.usdRate -= changeUsd;
+                fxChanged = true;
+            }
+            // Euro
+            if (Math.random() < 0.30) {
+                let changeEur = state.eurRate * (Math.random() * 0.10 + 0.02);
+                if (Math.random() < 0.50) state.eurRate += changeEur;
+                else state.eurRate -= changeEur;
+                fxChanged = true;
+            }
+
+            if (state.usdRate < 5) state.usdRate = 5;
+            if (state.eurRate < 6) state.eurRate = 6;
+
+            if (fxChanged) log("💱 Küresel piyasalarda dalgalanma yaşandı! Döviz kurları güncellendi.", "var(--corporate-blue)");
+
+            log(`--- ÇEYREK ${state.day} BAŞLADI ---`, "var(--corporate-blue)");
+
+            // KREDİ KONTROLÜ
+            if (state.debt > 0) {
+                state.debtTimer--;
+                if (state.debtTimer <= 0) {
+                    showDeathScreen("Sekomoligania Merkez Bankası ödenmeyen kredi borçları yüzünden şirkete ve mal varlığına el koydu.", "İFLAS ETTİN!");
+                    return;
+                }
+            }
+
+            state.board.forEach(b => {
+                b.nufuz += Math.floor(Math.random() * 7) - 3; b.nufuz = Math.max(5, Math.min(95, b.nufuz));
+                b.threat += Math.floor(Math.random() * 5) - 2; b.threat = Math.max(0, Math.min(100, b.threat));
+                if (b.threat > 50 && b.nufuz > 40 && state.internalPower > 0) { state.internalPower -= 5; log(`🚨 KRİZ: ${b.name} arkandan iş çeviriyor!`, "var(--orange)"); }
+            });
+
+            if (state.role === 'CEO') {
+                state.budget += (state.market * 20) + state.passiveIncome; state.stock += (Math.random() * 4) - 2;
+                state.internalPower -= 2;
+                if (state.internalPower <= 0) { showDeathScreen("Kurul kararıyla yetkilerin alındı. Kovuldun!", "İFLAS ETTİN!"); return; }
+            } else { state.budget += 800 + state.passiveIncome; }
+
+            fluctuateRealEstate();
+
+            if (Math.random() * 100 > 96 && state.role === 'CEO') {
+                if (Math.random() < 0.4) {
+                    log("💥 BOOM! Aracında güçlü bir patlama yaşandı!", "var(--alert-red)");
+                    if (Math.random() < 0.6) { // %60 hastaneye yetişme ihtimali
+                        log("🚑 Ağır yaralanmana rağmen acil ekipleri seni hastaneye yetiştirdi...", "var(--orange)");
+                        if (Math.random() < 0.5) { // %50 taburcu olma / yaşama ihtimali
+                            log("🏥 Kritik ameliyatlardan sonra mucizevi şekilde hayatta kaldın!", "var(--neon-green)");
+                            state.hp = Math.max(0, state.hp - 5);
+                        } else {
+                            showDeathScreen("Hastanede yapılan tüm müdahalelere rağmen kurtarılamadın.", "SUİKAST!");
+                            return;
+                        }
+                    } else {
+                        showDeathScreen("Rakiplerin aracına C4 yerleştirdi. Olay yerinde hayatını kaybettin.", "SUİKAST!");
+                        return;
+                    }
+                }
+                else { log("🕵️ Korumaların aracındaki bombayı son anda fark etti. Ölümden döndün!", "var(--gold)"); }
+            }
+
+            updateUI();
+            saveGame();
+        }
+
+        function saveGame() {
+            if (state.isDead) return;
+            const saveData = {
+                state: state,
+                rivals: rivals,
+                properties: properties,
+                dynamicCosts: dynamicCosts
+            };
+            localStorage.setItem("sekomoligania_save", JSON.stringify(saveData));
+        }
+
+        function loadGame() {
+            const savedData = localStorage.getItem("sekomoligania_save");
+            if (!savedData) return alert("Kayıtlı bir oyun bulunamadı!");
+            
+            try {
+                const parsedData = JSON.parse(savedData);
+                state = parsedData.state;
+                rivals = parsedData.rivals;
+                for(let i=0; i<properties.length; i++) {
+                    if (parsedData.properties[i]) properties[i] = parsedData.properties[i];
+                }
+                dynamicCosts = parsedData.dynamicCosts;
+
+                document.getElementById("start-screen").style.display = "none"; 
+                document.getElementById("terminal").style.display = "flex";
+                document.getElementById("secret-admin-btn").style.display = "block";
+                
+                if(state.isPresident) {
+                    document.getElementById('presidency-panel').style.display = "block";
+                    document.getElementById('gov-pres-name').innerText = state.playerName;
+                    document.getElementById('gov-pres-comp').innerText = state.companyName;
+                }
+                
+                populateProperties(); toggleRoleUI(); updateUI();
+                log("💾 Kayıtlı oyun başarıyla yüklendi kaldığınız yerden devam ediyorsunuz.", "var(--gold)");
+            } catch (error) {
+                alert("Kayıt dosyası okunurken hata oluştu.");
+                console.error(error);
+            }
+        }
+
+        function updateUI() {
+            if (state.isDead) return;
+            calculateMaxHP(); calculateInflationCosts(); renderBoard(); populateProperties();
+            state.honor = Math.max(0, Math.min(100, state.honor)); state.internalPower = Math.max(0, Math.min(100, state.internalPower));
+
+            document.getElementById('player-name-display').innerText = state.playerName;
+            document.getElementById('company-name-display').innerText = state.companyName;
+            
+            if (state.spouse) {
+                document.getElementById('spouse-display-container').style.display = "inline";
+                document.getElementById('spouse-display').innerText = state.spouse;
+            } else {
+                document.getElementById('spouse-display-container').style.display = "none";
+            }
+
+            document.getElementById('day-counter').innerText = state.day; document.getElementById('budget').innerText = Math.floor(state.budget);
+            document.getElementById('stock-val').innerText = state.stock.toFixed(2);
+            document.getElementById('hp-text').innerText = state.hp; document.getElementById('max-hp-text').innerText = state.maxHp;
+
+            document.getElementById('honor-text').innerText = "%" + Math.floor(state.honor); document.getElementById('honor-bar').style.width = state.honor + "%";
+            document.getElementById('power-text').innerText = "%" + Math.floor(state.internalPower); document.getElementById('power-bar').style.width = state.internalPower + "%";
+            document.getElementById('market').innerText = "%" + Math.floor(state.market); document.getElementById('inflation-text').innerText = "%" + state.inflation;
+
+            document.getElementById('usd-reserve-panel').innerText = state.usd; document.getElementById('eur-reserve-panel').innerText = state.eur;
+            document.getElementById('usd-rate-display').innerText = state.usdRate.toFixed(2); document.getElementById('eur-rate-display').innerText = state.eurRate.toFixed(2);
+
+            document.getElementById('interest-rate').innerText = "%" + state.interestRate;
+            document.getElementById('current-debt').innerText = state.debt;
+            if (state.debt > 0) {
+                document.getElementById('debt-timer-text').style.display = "block";
+                document.getElementById('debt-timer').innerText = state.debtTimer;
+            } else {
+                document.getElementById('debt-timer-text').style.display = "none";
+            }
+
+            // Sayacın doğru yansıması için burayı garantiledik
+            document.getElementById('election-timer-banner').innerText = state.electionTimer;
+            document.getElementById('election-timer-panel').innerText = state.electionTimer;
+
+            document.getElementById('pol-player-honor').innerText = state.honor;
+            document.getElementById('pol-r1-name').innerText = rivals.r1.ceo; document.getElementById('pol-r1-honor').innerText = rivals.r1.honor;
+            document.getElementById('pol-r2-name').innerText = rivals.r2.ceo; document.getElementById('pol-r2-honor').innerText = rivals.r2.honor;
+
+            document.getElementById('r1-stock').innerText = rivals.r1.stock.toFixed(2) + " SZ"; document.getElementById('r1-market').innerText = "%" + rivals.r1.market; document.getElementById('r1-ceo').innerText = rivals.r1.ceo;
+            document.getElementById('r2-stock').innerText = rivals.r2.stock.toFixed(2) + " SZ"; document.getElementById('r2-market').innerText = "%" + rivals.r2.market; document.getElementById('r2-ceo').innerText = rivals.r2.ceo;
+
+            logArea.scrollTop = logArea.scrollHeight;
+            checkGameOver();
+        }
+
+        function calculateInflationCosts() {
+            let m = 1 + (state.inflation / 100); dynamicCosts = { wage: Math.floor(1000 * m), arson: Math.floor(2000 * m), cyber: Math.floor(3000 * m), dark: Math.floor(5000 * m) };
+            document.getElementById('btn-wage').innerText = `Maaş Zammı (-${dynamicCosts.wage} SZ)`; document.getElementById('btn-arson').innerText = `🔥 Kundakla (-${dynamicCosts.arson})`;
+            document.getElementById('btn-cyber').innerText = `💻 Siber (-${dynamicCosts.cyber})`; document.getElementById('btn-dark').innerText = `💀 Suikast (-${dynamicCosts.dark} SZ)`;
+        }
+
+        function openAdminPrompt() {
+            if (state.adminUnlocked) { document.getElementById('admin-panel').style.display = 'block'; return; }
+            let pass = prompt("Derin Devlet Şifresi:");
+            if (pass === "sekomoligania") { state.adminUnlocked = true; document.getElementById('admin-panel').style.display = 'block'; log("⚡ TANRI MODU AKTİF.", "var(--neon-green)"); }
+        }
+        function adminSetPresident() {
+            let t = document.getElementById("admin-pres-target").value; state.isPresident = false; document.getElementById('presidency-panel').style.display = "none";
+            if (t === 'player') { state.isPresident = true; document.getElementById('gov-pres-name').innerText = state.playerName; document.getElementById('gov-pres-comp').innerText = state.companyName; document.getElementById('presidency-panel').style.display = "block"; }
+            else { document.getElementById('gov-pres-name').innerText = rivals[t].ceo; document.getElementById('gov-pres-comp').innerText = rivals[t].name; }
+            log(`⚡ HİLE: Başkanlık değiştirildi.`, "var(--neon-green)"); document.getElementById('admin-panel').style.display = 'none'; updateUI();
+        }
+        function adminSwapIdentity() {
+            let tKey = document.getElementById("admin-swap-target").value; let oldP = state.playerName, oldC = state.companyName, oldS = state.stock, oldM = state.market, oldH = state.honor;
+            state.playerName = rivals[tKey].ceo; state.companyName = rivals[tKey].name; state.stock = rivals[tKey].stock; state.market = rivals[tKey].market; state.honor = rivals[tKey].honor; state.role = "CEO"; state.internalPower = 100;
+            rivals[tKey].ceo = oldP; rivals[tKey].name = oldC; rivals[tKey].stock = oldS; rivals[tKey].market = oldM; rivals[tKey].honor = oldH;
+            generateBoard(); log(`⚡ HİLE: Kimlik değiştirildi.`, "var(--purple)"); toggleRoleUI(); document.getElementById('admin-panel').style.display = 'none'; updateUI();
+        }
+        function loadAdminStats() {
+            let t = document.getElementById("admin-edit-target").value;
+            if (t === 'player') { document.getElementById('admin-honor').value = state.honor; document.getElementById('admin-market').value = state.market; document.getElementById('admin-stock').value = state.stock.toFixed(2); document.getElementById('admin-budget').value = Math.floor(state.budget); document.getElementById('admin-budget').disabled = false; }
+            else { document.getElementById('admin-honor').value = rivals[t].honor; document.getElementById('admin-market').value = rivals[t].market; document.getElementById('admin-stock').value = rivals[t].stock.toFixed(2); document.getElementById('admin-budget').value = ""; document.getElementById('admin-budget').disabled = true; }
+        }
+        function adminApplyStats() {
+            let t = document.getElementById("admin-edit-target").value; let h = parseInt(document.getElementById('admin-honor').value) || 0; let m = parseInt(document.getElementById('admin-market').value) || 0; let s = parseFloat(document.getElementById('admin-stock').value) || 1;
+            if (t === 'player') { let b = parseInt(document.getElementById('admin-budget').value) || 0; state.honor = h; state.market = m; state.stock = s; state.budget = b; }
+            else { rivals[t].honor = h; rivals[t].market = m; rivals[t].stock = s; } log(`⚡ HİLE: Değerler uygulandı.`, "var(--orange)"); updateUI();
+        }
+    </script>
+</body>
+
+</html>
